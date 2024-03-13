@@ -6,8 +6,8 @@ import (
 	"testing"
 )
 
-func TestUpdateMetric(t *testing.T) {
-	req := httptest.NewRequest(http.MethodGet, "/update/counter/example/2", nil)
+func TestHomeMetrics(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
 	w := httptest.NewRecorder()
 	ValueMetric(w, req)
 	res := w.Result()

@@ -20,14 +20,14 @@ func TestMemStorage_Get(t *testing.T) {
 		wantOk    bool
 	}{
 		{
-			name: "zero",
+			name: "good",
 			fields: fields{
 				data: map[string]interface{}{
-					"test": 1,
+					"first": 1,
 				},
 			},
 			args: args{
-				key: "test",
+				key: "first",
 			},
 			wantValue: 1,
 			wantOk:    true,
@@ -49,6 +49,41 @@ func TestMemStorage_Get(t *testing.T) {
 	}
 }
 
+func TestMemStorage_GetAll(t *testing.T) {
+	type fields struct {
+		data map[string]interface{}
+	}
+	tests := []struct {
+		name     string
+		fields   fields
+		wantData map[string]interface{}
+	}{
+		{
+			name: "good",
+			fields: fields{
+				data: map[string]interface{}{
+					"first":  1,
+					"second": 2,
+				},
+			},
+			wantData: map[string]interface{}{
+				"first":  1,
+				"second": 2,
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			m := &MemStorage{
+				data: tt.fields.data,
+			}
+			if gotData := m.GetAll(); !reflect.DeepEqual(gotData, tt.wantData) {
+				t.Errorf("GetAll() = %v, want %v", gotData, tt.wantData)
+			}
+		})
+	}
+}
+
 func TestMemStorage_Set(t *testing.T) {
 	type fields struct {
 		data map[string]interface{}
@@ -63,15 +98,15 @@ func TestMemStorage_Set(t *testing.T) {
 		args   args
 	}{
 		{
-			name: "zero",
+			name: "good",
 			fields: fields{
 				data: map[string]interface{}{
-					"test": 1,
+					"first": 1,
 				},
 			},
 			args: args{
-				key:   "test_key",
-				value: 2,
+				key:   "first",
+				value: 1,
 			},
 		},
 	}
@@ -91,7 +126,7 @@ func TestNewMemStorage(t *testing.T) {
 		want *MemStorage
 	}{
 		{
-			name: "zero",
+			name: "good",
 			want: &MemStorage{
 				data: make(map[string]interface{}),
 			},

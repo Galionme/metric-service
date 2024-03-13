@@ -24,3 +24,7 @@ func (m *MemStorage) Get(key string) (value interface{}, ok bool) {
 func (m *MemStorage) Set(key string, value interface{}) {
 	m.data[key] = value
 }
+
+func (m *MemStorage) GetAll() (data map[string]interface{}) {
+	return m.data
+}

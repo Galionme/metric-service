@@ -1,62 +1,56 @@
 package handlers
 
 import (
-	"errors"
-	"github.com/Galionme/metric-service.git/internal/storage"
+	"github.com/Galionme/service-template.git/internal/storage"
+	"github.com/Galionme/service-template.git/internal/util"
+	"github.com/go-chi/chi/v5"
 	"net/http"
-	"strconv"
-	"strings"
 )
 
 func UpdateMetric(res http.ResponseWriter, req *http.Request) {
 
-	urlParts := strings.Split(req.URL.Path, "/")
-
-	if len(urlParts) < 3 {
-
-		//log.Println("400 - Bad Request", req.URL, "no metric type")
-		res.WriteHeader(http.StatusBadRequest)
-		return
-	} else if len(urlParts) < 5 {
-
-		//log.Println("404 - Not Found", req.URL, "no metric name")
-		res.WriteHeader(http.StatusNotFound)
-		return
-	}
-
-	if err := pushStorage(urlParts[2], urlParts[3], urlParts[4]); err != nil {
-
-		//log.Println("400 - Bad Request", req.URL, "no metric type")
-		res.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	//log.Println("200 - Good!")
-	res.Header().Set("Content-Type", "application/json")
-	res.WriteHeader(http.StatusOK)
-}
-
-func pushStorage(typeMetric, nameMetric, valMetric string) (err error) {
-	var val interface{}
-
-	//log.Println(typeMetric, nameMetric, valMetric)
+	nameMetric := chi.URLParam(req, "name")
+	typeMetric := chi.URLParam(req, "type")
 
 	switch typeMetric {
-	case "gauge":
-		val, err = strconv.ParseFloat(valMetric, 64)
+
 	case "counter":
-		val, err = strconv.ParseInt(valMetric, 0, 64)
+
+		tmp, _ := storage.GlobalMemStorage.Get(nameMetric)
+
+		if tmp == nil {
+			tmp = int64(0)
+		}
+
+		count, ok := tmp.(int64)
+		if !ok {
+			res.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		num, err := util.StringToCounter(chi.URLParam(req, "value"))
+		if err != nil {
+			res.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		storage.GlobalMemStorage.Set(nameMetric, count+num)
+
+	case "gauge":
+
+		num, err := util.StringToGauge(chi.URLParam(req, "value"))
+		if err != nil {
+			res.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		storage.GlobalMemStorage.Set(nameMetric, num)
+
 	default:
-		err = errors.New("unsupported metric type")
+		res.WriteHeader(http.StatusBadRequest)
+		return
 	}
 
-	if err != nil {
-		return errors.New("not valid argument")
-	}
-
-	storage.GlobalMemStorage.Set(nameMetric, val)
-
-	//log.Println(nameMetric, val)
-
-	return nil
+	res.Header().Set("Content-Type", "application/json")
+	res.WriteHeader(http.StatusOK)
 }
