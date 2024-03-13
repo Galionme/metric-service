@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/Galionme/metric-service.git/internal/api/controllers"
+	"github.com/Galionme/metric-service.git/internal/handlers"
 	"github.com/Galionme/metric-service.git/internal/middleware"
 	"net/http"
 )
@@ -16,7 +16,7 @@ func run() error {
 	mux := http.NewServeMux()
 	mux.Handle(
 		"/update/",
-		middleware.Checking(http.HandlerFunc(controllers.UpdateMetric)),
+		middleware.Checking(http.HandlerFunc(handlers.UpdateMetric)),
 	)
 	return http.ListenAndServe(":8080", mux)
 }

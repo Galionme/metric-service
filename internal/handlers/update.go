@@ -1,4 +1,4 @@
-package controllers
+package handlers
 
 import (
 	"errors"
@@ -51,9 +51,12 @@ func pushStorage(typeMetric, nameMetric, valMetric string) (err error) {
 	}
 
 	if err != nil {
-		return err
+		return errors.New("not valid argument")
 	}
 
 	storage.GlobalMemStorage.Set(nameMetric, val)
+
+	//log.Println(nameMetric, val)
+
 	return nil
 }
