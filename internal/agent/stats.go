@@ -17,11 +17,12 @@ type Stats struct {
 	minRandomValue float64
 	maxRandomValue float64
 	mu             sync.Mutex
-	send           func(a, b, c string)
+	send           func(a, b, c, address string)
 	filter         *picker.Picker
+	address        string
 }
 
-func NewStats(minRandomValue, maxRandomValue float64, send func(a, b, c string)) *Stats {
+func NewStats(minRandomValue, maxRandomValue float64, send func(a, b, c, address string), address string) *Stats {
 	return &Stats{
 		memStats:       &runtime.MemStats{},
 		PollCount:      0,
@@ -30,6 +31,7 @@ func NewStats(minRandomValue, maxRandomValue float64, send func(a, b, c string))
 		RandomValue:    util.RandomFloat64(minRandomValue, maxRandomValue),
 		send:           send,
 		filter:         picker.NewPicker(),
+		address:        address,
 	}
 }
 
@@ -64,10 +66,10 @@ func (s *Stats) InitDoctor(reportInterval, pollInterval int) {
 func (s *Stats) push() {
 	s.mu.Lock()
 
-	s.send("counter", "PollCount", strconv.Itoa(s.PollCount))
+	s.send("counter", "PollCount", strconv.Itoa(s.PollCount), s.address)
 
 	strRandom, _ := util.GaugeToString(s.RandomValue)
-	s.send("gauge", "RandomValue", strRandom)
+	s.send("gauge", "RandomValue", strRandom, s.address)
 
 	val := reflect.ValueOf(*s.memStats)
 	typ := val.Type()
@@ -77,7 +79,7 @@ func (s *Stats) push() {
 		fieldName := typ.Field(i).Name
 
 		if str, err := s.filter.GetString(fieldName, field); err == nil {
-			s.send("gauge", fieldName, str)
+			s.send("gauge", fieldName, str, s.address)
 		}
 
 	}

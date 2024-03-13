@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/Galionme/metric-service.git/cmd/server/options"
 	"github.com/Galionme/metric-service.git/internal/handlers"
 	"github.com/Galionme/metric-service.git/internal/middleware"
 	"github.com/go-chi/chi/v5"
@@ -8,13 +9,16 @@ import (
 )
 
 func main() {
-	err := run()
+
+	options.ParseOptions()
+
+	err := run(*options.OptionsServer.Address)
 	if err != nil {
 		return
 	}
 }
 
-func run() error {
+func run(address string) error {
 
 	router := chi.NewRouter()
 
@@ -27,5 +31,5 @@ func run() error {
 		r.With(middleware.CorrectnessType, middleware.CorrectnessName).Post("/{type}/{name}/{value}", handlers.UpdateMetric)
 	})
 
-	return http.ListenAndServe(":8080", router)
+	return http.ListenAndServe(address, router)
 }
