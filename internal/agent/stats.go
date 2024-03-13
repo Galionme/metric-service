@@ -1,8 +1,8 @@
 package agent
 
 import (
-	"github.com/Galionme/service-template.git/internal/agent/picker"
-	"github.com/Galionme/service-template.git/internal/util"
+	"github.com/Galionme/metric-service.git/internal/agent/picker"
+	"github.com/Galionme/metric-service.git/internal/util"
 	"reflect"
 	"runtime"
 	"strconv"

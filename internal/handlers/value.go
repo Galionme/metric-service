@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"github.com/Galionme/service-template.git/internal/storage"
-	"github.com/Galionme/service-template.git/internal/util"
+	"github.com/Galionme/metric-service.git/internal/storage"
+	"github.com/Galionme/metric-service.git/internal/util"
 	"github.com/go-chi/chi/v5"
 	"net/http"
 )

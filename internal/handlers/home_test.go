@@ -9,7 +9,7 @@ import (
 func TestHomeMetrics(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
 	w := httptest.NewRecorder()
-	ValueMetric(w, req)
+	HomeMetrics(w, req)
 	res := w.Result()
 	res.Body.Close()
 	if res.StatusCode != http.StatusNotFound {

@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"github.com/Galionme/service-template.git/internal/storage"
+	"github.com/Galionme/metric-service.git/internal/storage"
 	"html/template"
 	"net/http"
 )
