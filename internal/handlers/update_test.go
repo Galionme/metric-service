@@ -12,7 +12,7 @@ func TestUpdateMetric(t *testing.T) {
 	UpdateMetric(w, req)
 	res := w.Result()
 	res.Body.Close()
-	if res.StatusCode != http.StatusNotFound {
+	if res.StatusCode != http.StatusBadRequest {
 		t.Errorf("Error")
 	}
 }

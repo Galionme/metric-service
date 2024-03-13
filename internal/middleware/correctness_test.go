@@ -27,11 +27,11 @@ func TestCorrectnessName(t *testing.T) {
 
 	fakeHandler := http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {})
 
-	correctedHandler := CorrectnessType(fakeHandler)
+	correctedHandler := CorrectnessName(fakeHandler)
 
 	correctedHandler.ServeHTTP(w, req)
 
-	if w.Code == http.StatusNotFound {
+	if w.Code == http.StatusBadRequest {
 		t.Errorf("Expected status less than %d; got %d", http.StatusBadRequest, w.Code)
 	}
 }
