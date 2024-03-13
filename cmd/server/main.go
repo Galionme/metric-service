@@ -2,8 +2,10 @@ package main
 
 import (
 	"github.com/Galionme/metric-service.git/cmd/server/options"
+	config "github.com/Galionme/metric-service.git/internal/config/server"
 	"github.com/Galionme/metric-service.git/internal/handlers"
 	"github.com/Galionme/metric-service.git/internal/middleware"
+	"github.com/caarlos0/env/v6"
 	"github.com/go-chi/chi/v5"
 	"net/http"
 )
@@ -11,6 +13,15 @@ import (
 func main() {
 
 	options.ParseOptions()
+
+	var cfg config.ConfigServer
+	if err := env.Parse(&cfg); err != nil {
+		return
+	}
+
+	if cfg.Address != "" && *options.OptionsServer.Address != "" {
+		*options.OptionsServer.Address = cfg.Address
+	}
 
 	err := run(*options.OptionsServer.Address)
 	if err != nil {
