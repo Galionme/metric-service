@@ -1,35 +1,26 @@
 package handlers
 
 import (
-	"github.com/Galionme/metric-service.git/internal/storage"
 	"html/template"
 	"net/http"
+
+	"github.com/Galionme/metric-service.git/internal/storage"
 )
 
 func HomeMetrics(res http.ResponseWriter, req *http.Request) {
 
-	tmpl := `
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-   <meta charset="UTF-8">
-   <title>service-template</title>
-  </head>
-  <body>
-   <h1>List of Names and Values:</h1>
-   <ul>
-    {{range $key, $value := .}}
-     <li>{{$key}}: {{$value}}</li>
-    {{end}}
-   </ul>
-  </body>
-  </html>
- `
 	data := storage.GlobalMemStorage.GetAll()
+	tmpl, err := template.ParseFiles("internal/templates/HomeList.html")
+	if err != nil {
+		res.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
-	t := template.Must(template.New("list").Parse(tmpl))
-
-	t.Execute(res, data)
+	err = tmpl.Execute(res, data)
+	if err != nil {
+		res.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
 	res.WriteHeader(http.StatusOK)
 }

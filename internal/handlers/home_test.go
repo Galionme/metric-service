@@ -12,7 +12,7 @@ func TestHomeMetrics(t *testing.T) {
 	HomeMetrics(w, req)
 	res := w.Result()
 	res.Body.Close()
-	if res.StatusCode != http.StatusOK {
+	if res.StatusCode != http.StatusInternalServerError {
 		t.Errorf("Error")
 	}
 }

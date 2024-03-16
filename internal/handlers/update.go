@@ -1,10 +1,12 @@
 package handlers
 
 import (
+	"net/http"
+	"strings"
+
 	"github.com/Galionme/metric-service.git/internal/storage"
 	"github.com/Galionme/metric-service.git/internal/util"
 	"github.com/go-chi/chi/v5"
-	"net/http"
 )
 
 func UpdateMetric(res http.ResponseWriter, req *http.Request) {
@@ -12,7 +14,7 @@ func UpdateMetric(res http.ResponseWriter, req *http.Request) {
 	nameMetric := chi.URLParam(req, "name")
 	typeMetric := chi.URLParam(req, "type")
 
-	switch typeMetric {
+	switch strings.ToLower(typeMetric) {
 
 	case "counter":
 

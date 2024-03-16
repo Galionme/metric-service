@@ -1,35 +1,44 @@
 package main
 
 import (
-	"github.com/Galionme/metric-service.git/cmd/server/options"
+	"net/http"
+
 	config "github.com/Galionme/metric-service.git/internal/config/server"
 	"github.com/Galionme/metric-service.git/internal/handlers"
 	"github.com/Galionme/metric-service.git/internal/middleware"
 	"github.com/caarlos0/env/v6"
 	"github.com/go-chi/chi/v5"
-	"net/http"
 )
 
 func main() {
 
-	options.ParseOptions()
+	options := NewOptions()
+
+	err := ParseOptions()
+	if err != nil {
+		panic(err)
+	}
 
 	var cfg config.ConfigServer
 	if err := env.Parse(&cfg); err != nil {
 		return
 	}
 
-	if cfg.Address != "" && *options.OptionsServer.Address != "" {
-		*options.OptionsServer.Address = cfg.Address
+	if cfg.Address != "" && *options.Address != "" {
+		*options.Address = cfg.Address
 	}
 
-	err := run(*options.OptionsServer.Address)
+	err = run(*options.Address)
 	if err != nil {
 		return
 	}
 }
 
 func run(address string) error {
+	return http.ListenAndServe(address, getRouter())
+}
+
+func getRouter() *chi.Mux {
 
 	router := chi.NewRouter()
 
@@ -42,5 +51,5 @@ func run(address string) error {
 		r.With(middleware.CorrectnessType, middleware.CorrectnessName).Post("/{type}/{name}/{value}", handlers.UpdateMetric)
 	})
 
-	return http.ListenAndServe(address, router)
+	return router
 }

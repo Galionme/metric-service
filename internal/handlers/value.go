@@ -1,10 +1,12 @@
 package handlers
 
 import (
+	"net/http"
+	"strings"
+
 	"github.com/Galionme/metric-service.git/internal/storage"
 	"github.com/Galionme/metric-service.git/internal/util"
 	"github.com/go-chi/chi/v5"
-	"net/http"
 )
 
 func ValueMetric(res http.ResponseWriter, req *http.Request) {
@@ -18,7 +20,7 @@ func ValueMetric(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	switch typeMetric {
+	switch strings.ToLower(typeMetric) {
 
 	case "counter":
 		count, ok := tmp.(int64)

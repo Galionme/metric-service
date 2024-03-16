@@ -1,13 +1,10 @@
-package options
+package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"os"
-)
-
-var (
-	OptionsServer *Options
 )
 
 type Options struct {
@@ -15,15 +12,12 @@ type Options struct {
 }
 
 func NewOptions() *Options {
-	return &Options{}
+	return &Options{
+		Address: flag.String("a", "localhost:8080", "HTTP server start address"),
+	}
 }
 
-func init() {
-	OptionsServer = NewOptions()
-	OptionsServer.Address = flag.String("a", "localhost:8080", "HTTP server start address")
-}
-
-func ParseOptions() {
+func ParseOptions() error {
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Use: %s [-a address]\n", os.Args[0])
 		flag.PrintDefaults()
@@ -34,6 +28,7 @@ func ParseOptions() {
 	if flag.NArg() > 0 {
 		fmt.Fprintf(os.Stderr, "Invalid arguments: %v\n", flag.Args())
 		flag.Usage()
-		os.Exit(1)
+		return errors.New("error flags")
 	}
+	return nil
 }
