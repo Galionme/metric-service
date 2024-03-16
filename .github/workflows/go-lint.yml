@@ -15,8 +15,8 @@ jobs:
       - name: Install golangci-lint
         run: |
           curl -sSfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b /usr/local/bin v1.44.1
-      - name: Add golangci-lint to PATH
-        run: echo "::add-path::/usr/local/bin"
+      - name: Add /usr/local/bin to PATH
+        run: echo "/usr/local/bin" >> $GITHUB_PATH
       - name: Run golangci-lint
         run: golangci-lint run
       - name: Upload lint to Codecov
