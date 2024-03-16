@@ -2,7 +2,7 @@
 package picker
 
 import (
-	"fmt"
+	"errors"
 	"reflect"
 	"strconv"
 )
@@ -62,7 +62,7 @@ func NewPicker() *Picker {
 func (p *Picker) GetString(name string, value reflect.Value) (string, error) {
 	typeValue, ok := p.buf[name]
 	if !ok {
-		return "", fmt.Errorf("value name not found")
+		return "", errors.New("value name not found")
 	}
 
 	switch typeValue {
@@ -74,5 +74,5 @@ func (p *Picker) GetString(name string, value reflect.Value) (string, error) {
 		return strconv.FormatFloat(value.Float(), 'f', -1, 64), nil
 	}
 
-	return "", fmt.Errorf("value type not found")
+	return "", errors.New("value type not found")
 }
