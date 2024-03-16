@@ -4,7 +4,7 @@ import (
 	"html/template"
 	"net/http"
 
-	"github.com/Galionme/metric-service.git/internal/storage"
+	"github.com/Galionme/metric-service/internal/storage"
 )
 
 func HomeMetrics(res http.ResponseWriter, req *http.Request) {

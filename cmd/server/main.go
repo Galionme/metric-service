@@ -3,9 +3,9 @@ package main
 import (
 	"net/http"
 
-	config "github.com/Galionme/metric-service.git/internal/config/server"
-	"github.com/Galionme/metric-service.git/internal/handlers"
-	"github.com/Galionme/metric-service.git/internal/middleware"
+	config "github.com/Galionme/metric-service/internal/config/server"
+	"github.com/Galionme/metric-service/internal/handlers"
+	"github.com/Galionme/metric-service/internal/middleware"
 	"github.com/caarlos0/env/v6"
 	"github.com/go-chi/chi/v5"
 )

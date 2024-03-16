@@ -1,4 +1,4 @@
-module github.com/Galionme/metric-service.git
+module github.com/Galionme/metric-service
 
 go 1.20
 

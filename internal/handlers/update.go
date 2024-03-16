@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/Galionme/metric-service.git/internal/storage"
-	"github.com/Galionme/metric-service.git/internal/util"
+	"github.com/Galionme/metric-service/internal/storage"
+	"github.com/Galionme/metric-service/internal/util"
 	"github.com/go-chi/chi/v5"
 )
 

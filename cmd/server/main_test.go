@@ -1,12 +1,13 @@
 package main
 
 import (
-	"github.com/Galionme/metric-service.git/internal/handlers"
-	"github.com/Galionme/metric-service.git/internal/middleware"
-	"github.com/go-chi/chi/v5"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/Galionme/metric-service/internal/handlers"
+	"github.com/Galionme/metric-service/internal/middleware"
+	"github.com/go-chi/chi/v5"
 )
 
 func Test_run(t *testing.T) {

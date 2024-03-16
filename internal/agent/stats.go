@@ -1,13 +1,14 @@
 package agent
 
 import (
-	"github.com/Galionme/metric-service.git/internal/agent/picker"
-	"github.com/Galionme/metric-service.git/internal/util"
 	"reflect"
 	"runtime"
 	"strconv"
 	"sync"
 	"time"
+
+	"github.com/Galionme/metric-service/internal/agent/picker"
+	"github.com/Galionme/metric-service/internal/util"
 )
 
 type Stats struct {

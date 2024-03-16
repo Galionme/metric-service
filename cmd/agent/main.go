@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/Galionme/metric-service.git/internal/agent"
-	config "github.com/Galionme/metric-service.git/internal/config/agent"
+	"github.com/Galionme/metric-service/internal/agent"
+	config "github.com/Galionme/metric-service/internal/config/agent"
 	"github.com/caarlos0/env/v6"
 	"github.com/go-resty/resty/v2"
 )
