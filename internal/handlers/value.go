@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/Galionme/metric-service/internal/enums"
 	"github.com/Galionme/metric-service/internal/storage"
 	"github.com/Galionme/metric-service/internal/util"
 	"github.com/go-chi/chi/v5"
@@ -22,7 +23,7 @@ func ValueMetric(res http.ResponseWriter, req *http.Request) {
 
 	switch strings.ToLower(typeMetric) {
 
-	case "counter":
+	case enums.TypeCounter:
 		count, ok := tmp.(int64)
 		if !ok {
 			res.WriteHeader(http.StatusBadRequest)
@@ -37,7 +38,7 @@ func ValueMetric(res http.ResponseWriter, req *http.Request) {
 			}
 		}
 
-	case "gauge":
+	case enums.TypeGauge:
 
 		count, ok := tmp.(float64)
 		if !ok {

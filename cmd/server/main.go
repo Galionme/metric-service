@@ -46,15 +46,12 @@ func run(address string) error {
 func getRouter() *chi.Mux {
 
 	router := chi.NewRouter()
-
 	router.Get("/", handlers.HomeMetrics)
-
 	router.Route("/value", func(r chi.Router) {
 		r.With(middleware.Correctness).Get("/{type}/{name}", handlers.ValueMetric)
 	})
 	router.Route("/update", func(r chi.Router) {
 		r.With(middleware.Correctness).Post("/{type}/{name}/{value}", handlers.UpdateMetric)
 	})
-
 	return router
 }

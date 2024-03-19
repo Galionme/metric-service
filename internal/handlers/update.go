@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/Galionme/metric-service/internal/enums"
 	"github.com/Galionme/metric-service/internal/storage"
 	"github.com/Galionme/metric-service/internal/util"
 	"github.com/go-chi/chi/v5"
@@ -16,7 +17,7 @@ func UpdateMetric(res http.ResponseWriter, req *http.Request) {
 
 	switch strings.ToLower(typeMetric) {
 
-	case "counter":
+	case enums.TypeCounter:
 
 		tmp, _ := storage.GlobalMemStorage.Get(nameMetric)
 
@@ -38,7 +39,7 @@ func UpdateMetric(res http.ResponseWriter, req *http.Request) {
 
 		storage.GlobalMemStorage.Set(nameMetric, count+num)
 
-	case "gauge":
+	case enums.TypeGauge:
 
 		num, err := util.StringToGauge(chi.URLParam(req, "value"))
 		if err != nil {

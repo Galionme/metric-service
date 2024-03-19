@@ -1,8 +1,11 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/Galionme/metric-service/internal/agent"
 	config "github.com/Galionme/metric-service/internal/config/agent"
+
 	"github.com/caarlos0/env/v6"
 	"github.com/go-resty/resty/v2"
 )
@@ -13,11 +16,13 @@ func main() {
 
 	err := ParseOptions()
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
 
 	var cfg config.ConfigAgent
 	if err := env.Parse(&cfg); err != nil {
+		fmt.Println(err)
 		return
 	}
 
@@ -41,10 +46,9 @@ func sendServer(typeMetric, nameMetric, valueMetric, address string) {
 
 	_, err := client.R().
 		SetHeader("Content-Type", "application/json").
-		Post("http://" + address + "/update/" + typeMetric + "/" + nameMetric + "/" + valueMetric)
-
+		Post(fmt.Sprintf("http://%s/update/%s/%s/%s", address, typeMetric, nameMetric, valueMetric))
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 
 }
