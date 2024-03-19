@@ -14,10 +14,10 @@ func Test_run(t *testing.T) {
 	router := chi.NewRouter()
 	router.Get("/", handlers.HomeMetrics)
 	router.Route("/value", func(r chi.Router) {
-		r.With(middleware.CorrectnessType, middleware.CorrectnessName).Get("/{type}/{name}", handlers.ValueMetric)
+		r.With(middleware.Correctness).Get("/{type}/{name}", handlers.ValueMetric)
 	})
 	router.Route("/update", func(r chi.Router) {
-		r.With(middleware.CorrectnessType, middleware.CorrectnessName).Post("/{type}/{name}/{value}", handlers.UpdateMetric)
+		r.With(middleware.Correctness).Post("/{type}/{name}/{value}", handlers.UpdateMetric)
 	})
 
 	ts := httptest.NewServer(router)
